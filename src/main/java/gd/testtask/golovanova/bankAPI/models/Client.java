@@ -35,7 +35,6 @@ public class Client {
     @NotEmpty
     private String address;
 
-    @Column(name = "legal_form")
     @ManyToOne
     @JoinColumn(name = "legal_form_id", referencedColumnName = "id")
     private LegalForm legalForm;
