@@ -27,9 +27,9 @@ public class LegalFormService {
         return legalFormRepository.findAll();
     }
 
-    public LegalFormDTO findOne(int id) {
-        Optional<LegalForm> bank = legalFormRepository.findById(id);
-        return convertToLegalFormDTO(bank.orElseThrow(LegalFormNotFoundException::new));
+    public LegalForm findOne(int id) {
+        Optional<LegalForm> legalForm = legalFormRepository.findById(id);
+        return legalForm.orElseThrow(LegalFormNotFoundException::new);
     }
 
     private LegalForm convertToLegalForm(LegalFormDTO legalFormDTO) {

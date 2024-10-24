@@ -1,6 +1,7 @@
 package gd.testtask.golovanova.bankAPI.services;
 
 import gd.testtask.golovanova.bankAPI.dto.ClientDTO;
+import gd.testtask.golovanova.bankAPI.dto.LegalFormDTO;
 import gd.testtask.golovanova.bankAPI.models.Client;
 import gd.testtask.golovanova.bankAPI.models.LegalForm;
 import gd.testtask.golovanova.bankAPI.repositories.ClientRepository;
@@ -22,13 +23,13 @@ import java.util.stream.Collectors;
 public class ClientService {
 
     private final ClientRepository clientRepository;
-    private final LegalFormRepository legalFormRepository;
+    private final LegalFormService legalFormService;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public ClientService(ClientRepository clientRepository, LegalFormRepository legalFormRepository) {
+    public ClientService(ClientRepository clientRepository, LegalFormService legalFormService) {
         this.clientRepository = clientRepository;
-        this.legalFormRepository = legalFormRepository;
+        this.legalFormService = legalFormService;
         this.modelMapper = new ModelMapper();
     }
 
@@ -74,8 +75,7 @@ public class ClientService {
 
     @Transactional
     public void save(ClientDTO clientDTO){
-        LegalForm legalForm = legalFormRepository.findById(clientDTO.getLegalFormId())
-                .orElseThrow(LegalFormNotFoundException::new);
+        LegalForm legalForm = legalFormService.findOne(clientDTO.getLegalFormId());
         Client client = convertToClient(clientDTO);
         client.setLegalForm(legalForm);
         clientRepository.save(client);
@@ -93,8 +93,7 @@ public class ClientService {
     public void update(int id, ClientDTO clientDTO){
         Client client = clientRepository.findById(id)
                 .orElseThrow(ClientNotFoundException::new);
-        LegalForm legalForm = legalFormRepository.findById(clientDTO.getLegalFormId())
-                .orElseThrow(LegalFormNotFoundException::new);
+        LegalForm legalForm = legalFormService.findOne(clientDTO.getLegalFormId());
         client.setLegalForm(legalForm);
         client.setName(clientDTO.getName());
         client.setShortName(clientDTO.getShortName());
