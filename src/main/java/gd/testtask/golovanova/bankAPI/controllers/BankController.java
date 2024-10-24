@@ -1,10 +1,10 @@
-package gd.golovanova.testtask.controllers;
+package gd.testtask.golovanova.bankAPI.controllers;
 
-import gd.golovanova.testtask.dto.BankDTO;
-import gd.golovanova.testtask.services.BankService;
-import gd.golovanova.testtask.util.BankNotCreatedException;
-import gd.golovanova.testtask.util.BankNotFoundException;
-import gd.golovanova.testtask.util.BankNotUpdatedException;
+import gd.testtask.golovanova.bankAPI.dto.BankDTO;
+import gd.testtask.golovanova.bankAPI.services.BankService;
+import gd.testtask.golovanova.bankAPI.util.BankNotCreatedException;
+import gd.testtask.golovanova.bankAPI.util.BankNotFoundException;
+import gd.testtask.golovanova.bankAPI.util.BankNotUpdatedException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
 
 import java.util.List;
 
@@ -29,10 +28,10 @@ public class BankController {
 
     @GetMapping
     public List<BankDTO> getBanks(@RequestParam(value = "sort_by_id", required = false, defaultValue = "false") boolean sortById,
-                               @RequestParam(value = "sort_by_name", required = false, defaultValue = "false") boolean sortByName,
-                               @RequestParam(value = "sort_by_bank_id_code", required = false, defaultValue = "false") boolean sortByBankIdCode,
-                               @RequestParam(value = "filter_by_name", required = false) String filterByName,
-                               @RequestParam(value = "filter_by_bankIdCode", required = false) String filterByBankIdCode) {
+                                  @RequestParam(value = "sort_by_name", required = false, defaultValue = "false") boolean sortByName,
+                                  @RequestParam(value = "sort_by_bank_id_code", required = false, defaultValue = "false") boolean sortByBankIdCode,
+                                  @RequestParam(value = "filter_by_name", required = false) String filterByName,
+                                  @RequestParam(value = "filter_by_bankIdCode", required = false) String filterByBankIdCode) {
 
         return bankService.findAll(filterByName, filterByBankIdCode, sortById, sortByName, sortByBankIdCode);
     }
@@ -62,7 +61,7 @@ public class BankController {
             bankService.delete(id);
             return ResponseEntity.ok().build();
         } catch (BankNotFoundException e) {
-            return ResponseEntity.notFound().build(); // 404 Not Found
+            return ResponseEntity.notFound().build();
         }
     }
 }

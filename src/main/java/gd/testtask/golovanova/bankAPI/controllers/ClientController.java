@@ -1,16 +1,15 @@
-package gd.golovanova.testtask.controllers;
+package gd.testtask.golovanova.bankAPI.controllers;
 
 
-import gd.golovanova.testtask.dto.ClientDTO;
-import gd.golovanova.testtask.services.ClientService;
-import gd.golovanova.testtask.util.*;
+import gd.testtask.golovanova.bankAPI.dto.ClientDTO;
+import gd.testtask.golovanova.bankAPI.services.ClientService;
+import gd.testtask.golovanova.bankAPI.util.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -61,19 +60,10 @@ public class ClientController {
         try {
             clientService.delete(id);
             return ResponseEntity.ok().build();
-        } catch (BankNotFoundException e) {
-            return ResponseEntity.notFound().build(); // 404 Not Found
+        } catch (ClientNotFoundException e) {
+            return ResponseEntity.notFound().build();
         }
     }
-    @ExceptionHandler
-    private ResponseEntity<ClientErrorResponse> handleException(ClientNotFoundException e) {
-        ClientErrorResponse response = new ClientErrorResponse(
-                "Client not found", System.currentTimeMillis()
-        );
-        // http response + 404 status
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-    }
-
 
 }
 

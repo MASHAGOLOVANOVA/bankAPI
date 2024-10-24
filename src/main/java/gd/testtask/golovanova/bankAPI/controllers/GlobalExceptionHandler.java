@@ -15,7 +15,7 @@ public class GlobalExceptionHandler {
 
     //Banks errors handler
 
-    @ExceptionHandler(BankNotFoundException.class)
+    @ExceptionHandler(BankNotCreatedException.class)
     private ResponseEntity<BankErrorResponse> handleException(BankNotCreatedException e) {
         BankErrorResponse response = new BankErrorResponse(
                 e.getMessage(), System.currentTimeMillis()
@@ -23,7 +23,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(BankNotUpdatedException.class)
+    @ExceptionHandler(BankNotFoundException.class)
     private ResponseEntity<BankErrorResponse> handleException(BankNotFoundException e) {
         BankErrorResponse response = new BankErrorResponse(
                 "Bank not found", System.currentTimeMillis()
@@ -42,7 +42,7 @@ public class GlobalExceptionHandler {
 
     //Clients errors handler
 
-    @ExceptionHandler(ClientNotFoundException.class)
+    @ExceptionHandler(ClientNotCreatedException.class)
     private ResponseEntity<ClientErrorResponse> handleException(ClientNotCreatedException e) {
         ClientErrorResponse response = new ClientErrorResponse(
                 e.getMessage(), System.currentTimeMillis()
@@ -50,7 +50,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(ClientNotUpdatedException.class)
+    @ExceptionHandler(ClientNotFoundException.class)
     private ResponseEntity<ClientErrorResponse> handleException(ClientNotFoundException e) {
         ClientErrorResponse response = new ClientErrorResponse(
                 "Bank not found", System.currentTimeMillis()
