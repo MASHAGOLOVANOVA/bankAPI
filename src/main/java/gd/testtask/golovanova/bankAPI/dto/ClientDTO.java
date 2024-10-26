@@ -2,15 +2,13 @@ package gd.testtask.golovanova.bankAPI.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 public class ClientDTO {
 
     @Size(min = 1, max = 300, message = "Name should be between 2 and 300 characters")

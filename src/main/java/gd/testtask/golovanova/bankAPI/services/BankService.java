@@ -83,7 +83,7 @@ public class BankService {
         bankRepository.save(bank);
     }
 
-    private Bank convertToBank(BankDTO bankDTO) {
+    public Bank convertToBank(BankDTO bankDTO) {
         return modelMapper.map(bankDTO, Bank.class);
     }
 
