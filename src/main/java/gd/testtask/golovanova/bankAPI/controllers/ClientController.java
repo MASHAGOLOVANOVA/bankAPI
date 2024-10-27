@@ -30,9 +30,9 @@ public class ClientController {
                                       @RequestParam(value = "sort_by_name", required = false, defaultValue = "false") boolean sortByName,
                                       @RequestParam(value = "sort_by_short_name", required = false, defaultValue = "false") boolean sortByShortName,
                                       @RequestParam(value = "sort_by_address", required = false, defaultValue = "false") boolean sortByAddress,
-                                      @RequestParam(value = "filter_by_name", required = false) String filterByName,
-                                      @RequestParam(value = "filter_by_short_name", required = false) String filterByShortName,
-                                      @RequestParam(value = "filter_by_address", required = false) String filterByAddress) {
+                                      @RequestParam(value = "filter_by_name", required = false, defaultValue = "") String filterByName,
+                                      @RequestParam(value = "filter_by_short_name", required = false, defaultValue = "") String filterByShortName,
+                                      @RequestParam(value = "filter_by_address", required = false, defaultValue = "") String filterByAddress) {
         return clientService.findAll(filterByName,filterByShortName,filterByAddress,sortById,sortByName,sortByShortName,sortByAddress);
     }
 
@@ -48,7 +48,7 @@ public class ClientController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @PatchMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<HttpStatus> updateClient(@PathVariable int id, @RequestBody @Valid ClientDTO clientDTO, BindingResult bindingResult) {
         GlobalExceptionHandler.handleValidationErrors(bindingResult, ClientNotUpdatedException.class);
         clientService.update(id, clientDTO);
@@ -64,6 +64,8 @@ public class ClientController {
             return ResponseEntity.notFound().build();
         }
     }
+
+
 
 }
 

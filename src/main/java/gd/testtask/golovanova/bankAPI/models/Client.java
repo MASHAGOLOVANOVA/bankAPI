@@ -32,7 +32,7 @@ public class Client {
     private String shortName;
 
     @Column(name = "address")
-    @NotEmpty
+    @NotEmpty(message = "address should not be empty")
     private String address;
 
     @ManyToOne

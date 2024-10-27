@@ -53,7 +53,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ClientNotFoundException.class)
     private ResponseEntity<ClientErrorResponse> handleException(ClientNotFoundException e) {
         ClientErrorResponse response = new ClientErrorResponse(
-                "Bank not found", System.currentTimeMillis()
+                "Client not found", System.currentTimeMillis()
         );
         // http response + 404 status
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
@@ -94,8 +94,18 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
-    //Validation errors handler
 
+
+    @ExceptionHandler(LegalFormNotFoundException.class)
+    private ResponseEntity<LegalFormErrorResponse> handleException(LegalFormNotFoundException e) {
+        LegalFormErrorResponse response = new LegalFormErrorResponse(
+                "LegalForm not found", System.currentTimeMillis()
+        );
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+
+    //Validation errors handler
     public static void handleValidationErrors(BindingResult bindingResult, Class<? extends RuntimeException> exceptionClass) {
         if (bindingResult.hasErrors()) {
             StringBuilder errorMessage = new StringBuilder();

@@ -16,11 +16,9 @@ import java.util.Optional;
 public class LegalFormService {
 
     private final LegalFormRepository legalFormRepository;
-    private final ModelMapper modelMapper;
 
     public LegalFormService(LegalFormRepository legalFormRepository) {
         this.legalFormRepository = legalFormRepository;
-        this.modelMapper = new ModelMapper();
     }
 
     public List<LegalForm> findAll() {
@@ -30,14 +28,6 @@ public class LegalFormService {
     public LegalForm findOne(int id) {
         Optional<LegalForm> legalForm = legalFormRepository.findById(id);
         return legalForm.orElseThrow(LegalFormNotFoundException::new);
-    }
-
-    public LegalForm convertToLegalForm(LegalFormDTO legalFormDTO) {
-        return modelMapper.map(legalFormDTO, LegalForm.class);
-    }
-
-    public LegalFormDTO convertToLegalFormDTO(LegalForm legalForm) {
-        return modelMapper.map(legalForm, LegalFormDTO.class);
     }
 
 }

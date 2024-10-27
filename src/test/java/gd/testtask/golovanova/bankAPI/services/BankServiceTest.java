@@ -228,9 +228,8 @@ public class BankServiceTest {
         List<Bank> lessBanks = new ArrayList<>(banks);
 
         doAnswer(invocation -> {
-            // Удаляем элемент с индексом 9
             lessBanks.remove(0);
-            return null; // Метод возвращает void
+            return null;
         }).when(bankRepository).deleteById(anyInt());
 
         when(bankRepository.existsById(anyInt())).thenReturn(true);

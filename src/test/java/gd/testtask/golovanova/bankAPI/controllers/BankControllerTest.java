@@ -40,7 +40,7 @@ public class BankControllerTest {
 
     private List<BankDTO> bankDTOList;
 
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
 
 
     @Autowired
@@ -319,7 +319,7 @@ public class BankControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(bankDTO)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value(containsString("Name should be between 2 and 300 characters"))) // Ожидаем сообщение об ошибке
+                .andExpect(jsonPath("$.message").value(containsString("Name should be between 1 and 300 characters"))) // Ожидаем сообщение об ошибке
                 .andExpect(jsonPath("$.message").value(containsString("Bank id code must have 9 numbers")));// Ожидаем сообщение об ошибке
     }
 
@@ -354,7 +354,7 @@ public class BankControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(bankDTO)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value(containsString("Name should be between 2 and 300 characters"))) // Ожидаем сообщение об ошибке
+                .andExpect(jsonPath("$.message").value(containsString("Name should be between 1 and 300 characters"))) // Ожидаем сообщение об ошибке
                 .andExpect(jsonPath("$.message").value(containsString("Bank id code must have 9 numbers")));// Ожидаем сообщение об ошибке
         }
 

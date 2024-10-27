@@ -2,6 +2,7 @@ package gd.testtask.golovanova.bankAPI.dto;
 
 
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Getter
@@ -18,8 +19,10 @@ public class DepositDTO {
     @Min(value = 0)
     private int period;
 
+    @NotNull
     private int client_id;
 
+    @NotNull
     private int bank_id;
 
 }
