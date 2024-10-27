@@ -101,7 +101,7 @@ public class ClientService {
         clientRepository.save(client);
     }
 
-    private Client convertToClient(ClientDTO clientDTO) {
+    public Client convertToClient(ClientDTO clientDTO) {
         return modelMapper.map(clientDTO, Client.class);
     }
 

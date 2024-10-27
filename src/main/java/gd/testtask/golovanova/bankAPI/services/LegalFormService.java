@@ -32,7 +32,7 @@ public class LegalFormService {
         return legalForm.orElseThrow(LegalFormNotFoundException::new);
     }
 
-    private LegalForm convertToLegalForm(LegalFormDTO legalFormDTO) {
+    public LegalForm convertToLegalForm(LegalFormDTO legalFormDTO) {
         return modelMapper.map(legalFormDTO, LegalForm.class);
     }
 

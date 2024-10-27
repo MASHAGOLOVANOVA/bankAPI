@@ -1,9 +1,8 @@
-package gd.testtask.golovanova.bankAPI;
+package gd.testtask.golovanova.bankAPI.services;
 
 import gd.testtask.golovanova.bankAPI.dto.BankDTO;
 import gd.testtask.golovanova.bankAPI.models.Bank;
 import gd.testtask.golovanova.bankAPI.repositories.BankRepository;
-import gd.testtask.golovanova.bankAPI.services.BankService;
 import gd.testtask.golovanova.bankAPI.util.BankNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
@@ -281,7 +280,7 @@ public class BankServiceTest {
 
 
     @Test
-    public void updateNonExistentBankThrowsException() {
+    public void updateNotExistentBankThrowsException() {
         int bankId = 11;
         BankDTO bankDTO = new BankDTO();
         bankDTO.setName("Some Bank");

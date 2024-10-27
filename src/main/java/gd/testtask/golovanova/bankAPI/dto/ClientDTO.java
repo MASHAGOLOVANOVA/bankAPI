@@ -9,6 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
+@ToString
 public class ClientDTO {
 
     @Size(min = 1, max = 300, message = "Name should be between 2 and 300 characters")

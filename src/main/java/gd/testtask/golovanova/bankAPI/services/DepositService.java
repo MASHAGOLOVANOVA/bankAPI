@@ -107,7 +107,7 @@ public class DepositService {
         deposit.setPeriod(depositDTO.getPeriod());
         depositRepository.save(deposit);
     }
-    private Deposit convertToDeposit(DepositDTO depositDTO) {
+    public Deposit convertToDeposit(DepositDTO depositDTO) {
         return modelMapper.map(depositDTO, Deposit.class);
     }
 

@@ -1,4 +1,4 @@
-package gd.testtask.golovanova.bankAPI;
+package gd.testtask.golovanova.bankAPI.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gd.testtask.golovanova.bankAPI.dto.BankDTO;
