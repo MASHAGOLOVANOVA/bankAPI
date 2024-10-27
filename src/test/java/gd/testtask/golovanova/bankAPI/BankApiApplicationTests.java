@@ -8,9 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class BankApiApplicationTests {
 
-	@Autowired
-	BankService bankService;
-
 	@Test
 	void contextLoads() {
 	}

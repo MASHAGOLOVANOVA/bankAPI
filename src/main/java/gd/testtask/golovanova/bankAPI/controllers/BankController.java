@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/banks")
 public class BankController {
 
@@ -30,8 +30,8 @@ public class BankController {
     public List<BankDTO> getBanks(@RequestParam(value = "sort_by_id", required = false, defaultValue = "false") boolean sortById,
                                   @RequestParam(value = "sort_by_name", required = false, defaultValue = "false") boolean sortByName,
                                   @RequestParam(value = "sort_by_bank_id_code", required = false, defaultValue = "false") boolean sortByBankIdCode,
-                                  @RequestParam(value = "filter_by_name", required = false) String filterByName,
-                                  @RequestParam(value = "filter_by_bankIdCode", required = false) String filterByBankIdCode) {
+                                  @RequestParam(value = "filter_by_name", required = false, defaultValue = "") String filterByName,
+                                  @RequestParam(value = "filter_by_bankIdCode", required = false, defaultValue = "") String filterByBankIdCode) {
 
         return bankService.findAll(filterByName, filterByBankIdCode, sortById, sortByName, sortByBankIdCode);
     }
@@ -44,14 +44,14 @@ public class BankController {
     @PostMapping
     public ResponseEntity<HttpStatus> createBank(@RequestBody @Valid BankDTO bankDTO, BindingResult bindingResult) {
         GlobalExceptionHandler.handleValidationErrors(bindingResult, BankNotCreatedException.class);
-            bankService.save(bankDTO);
+        bankService.save(bankDTO);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<HttpStatus> updateBank(@PathVariable("id") int id, @RequestBody @Valid BankDTO bankDTO, BindingResult bindingResult) {
         GlobalExceptionHandler.handleValidationErrors(bindingResult, BankNotUpdatedException.class);
-            bankService.update(id, bankDTO);
+        bankService.update(id, bankDTO);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 

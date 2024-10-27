@@ -62,22 +62,19 @@ public class BankServiceTest {
     }
 
     @Test
-    public void findAllBanksTest(){
+    public void findAllBanksTest() {
         when(bankRepository.findAll()).thenReturn(banks);
-        List<BankDTO> receivedBanks = bankService.findAll(null,null,false,false,false);
+        List<BankDTO> receivedBanks = bankService.findAll(null, null, false, false, false);
 
-        assertEquals(banks.size(),receivedBanks.size());
+        assertEquals(banks.size(), receivedBanks.size());
         assertIterableEquals(banks.stream().map(bankService::convertToBankDTO).collect(Collectors.toList()), receivedBanks);
-        verify(bankRepository,times(1)).findAll();
+        verify(bankRepository, times(1)).findAll();
     }
 
     @Test
     public void findAllBanksIfEmptyTest() {
-        // given
         when(bankRepository.findAll()).thenReturn(Collections.emptyList());
-        // when
-        List<BankDTO> receivedBanks = bankService.findAll(null,null,false,false,false);
-        // then
+        List<BankDTO> receivedBanks = bankService.findAll("", "", false, false, false);
         assertTrue(receivedBanks.isEmpty());
 
         verify(bankRepository, times(1)).findAll();
@@ -86,130 +83,130 @@ public class BankServiceTest {
     @Test
     public void findAllBanksWithExistingNameFilterTest() {
         when(bankRepository.findAll()).thenReturn(banks);
-        List<BankDTO> receivedBanks = bankService.findAll("bank1",null,false,false,false);
-        assertEquals(1,receivedBanks.size());
-        assertEquals(bankService.convertToBankDTO(banks.get(0)),receivedBanks.get(0));
+        List<BankDTO> receivedBanks = bankService.findAll("bank1", null, false, false, false);
+        assertEquals(1, receivedBanks.size());
+        assertEquals(bankService.convertToBankDTO(banks.get(0)), receivedBanks.get(0));
         verify(bankRepository, times(1)).findAll();
     }
 
     @Test
     public void findAllBanksWithNotExistingNameFilterTest() {
         when(bankRepository.findAll()).thenReturn(banks);
-        List<BankDTO> receivedBanks = bankService.findAll("bank112",null,false,false,false);
-        assertEquals(0,receivedBanks.size());
+        List<BankDTO> receivedBanks = bankService.findAll("bank112", null, false, false, false);
+        assertEquals(0, receivedBanks.size());
         verify(bankRepository, times(1)).findAll();
     }
 
     @Test
     public void findAllBanksWithExistingBicFilterTest() {
         when(bankRepository.findAll()).thenReturn(banks);
-        List<BankDTO> receivedBanks = bankService.findAll(null,"987654321",false,false,false);
-        assertEquals(2,receivedBanks.size());
-        assertEquals(bankService.convertToBankDTO(banks.get(1)),receivedBanks.get(0));
-        assertEquals(bankService.convertToBankDTO(banks.get(2)),receivedBanks.get(1));
+        List<BankDTO> receivedBanks = bankService.findAll(null, "987654321", false, false, false);
+        assertEquals(2, receivedBanks.size());
+        assertEquals(bankService.convertToBankDTO(banks.get(1)), receivedBanks.get(0));
+        assertEquals(bankService.convertToBankDTO(banks.get(2)), receivedBanks.get(1));
         verify(bankRepository, times(1)).findAll();
     }
 
     @Test
     public void findAllBanksWithNotExistingBicFilterTest() {
         when(bankRepository.findAll()).thenReturn(banks);
-        List<BankDTO> receivedBanks = bankService.findAll(null,"999999999",false,false,false);
-        assertEquals(0,receivedBanks.size());
+        List<BankDTO> receivedBanks = bankService.findAll(null, "999999999", false, false, false);
+        assertEquals(0, receivedBanks.size());
         verify(bankRepository, times(1)).findAll();
     }
 
     @Test
     public void findAllBanksWithExistingNameAndBicFilterTest() {
         when(bankRepository.findAll()).thenReturn(banks);
-        List<BankDTO> receivedBanks = bankService.findAll("bank1","123456789",false,false,false);
-        assertEquals(1,receivedBanks.size());
-        assertEquals(bankService.convertToBankDTO(banks.get(0)),receivedBanks.get(0));
+        List<BankDTO> receivedBanks = bankService.findAll("bank1", "123456789", false, false, false);
+        assertEquals(1, receivedBanks.size());
+        assertEquals(bankService.convertToBankDTO(banks.get(0)), receivedBanks.get(0));
         verify(bankRepository, times(1)).findAll();
     }
 
     @Test
     public void findAllBanksWithExistingNameAndNotExistingBicFilterTest() {
         when(bankRepository.findAll()).thenReturn(banks);
-        List<BankDTO> receivedBanks = bankService.findAll("bank1","099999999",false,false,false);
-        assertEquals(0,receivedBanks.size());
+        List<BankDTO> receivedBanks = bankService.findAll("bank1", "099999999", false, false, false);
+        assertEquals(0, receivedBanks.size());
         verify(bankRepository, times(1)).findAll();
     }
 
     @Test
     public void findAllBanksWithNotExistingNameAndBicFilterTest() {
         when(bankRepository.findAll()).thenReturn(banks);
-        List<BankDTO> receivedBanks = bankService.findAll("bank112","123456789",false,false,false);
-        assertEquals(0,receivedBanks.size());
+        List<BankDTO> receivedBanks = bankService.findAll("bank112", "123456789", false, false, false);
+        assertEquals(0, receivedBanks.size());
         verify(bankRepository, times(1)).findAll();
     }
 
     @Test
-    public void findAllBanksWithSortByIdTest(){
+    public void findAllBanksWithSortByIdTest() {
         when(bankRepository.findAll()).thenReturn(banks);
         List<BankDTO> notSortedBanks = banks.stream().map(bankService::convertToBankDTO).collect(Collectors.toList());
-        List<BankDTO> receivedBanks = bankService.findAll(null,null,true,false,false);
-        assertEquals(banks.size(),receivedBanks.size());
+        List<BankDTO> receivedBanks = bankService.findAll(null, null, true, false, false);
+        assertEquals(banks.size(), receivedBanks.size());
         assertEquals(notSortedBanks, receivedBanks);
-        verify(bankRepository,times(1)).findAll();
+        verify(bankRepository, times(1)).findAll();
     }
 
     @Test
-    public void findAllBanksWithSortByNameTest(){
+    public void findAllBanksWithSortByNameTest() {
         when(bankRepository.findAll()).thenReturn(banks);
         List<BankDTO> notSortedBanks = banks.stream().map(bankService::convertToBankDTO).toList();
-        List<BankDTO> receivedBanks = bankService.findAll(null,null,false,true,false);
+        List<BankDTO> receivedBanks = bankService.findAll(null, null, false, true, false);
 
-        assertEquals(notSortedBanks.get(3),receivedBanks.get(0));
-        assertEquals(notSortedBanks.get(0),receivedBanks.get(1));
-        assertEquals(notSortedBanks.get(1),receivedBanks.get(2));
-        assertEquals(notSortedBanks.get(2),receivedBanks.get(3));
+        assertEquals(notSortedBanks.get(3), receivedBanks.get(0));
+        assertEquals(notSortedBanks.get(0), receivedBanks.get(1));
+        assertEquals(notSortedBanks.get(1), receivedBanks.get(2));
+        assertEquals(notSortedBanks.get(2), receivedBanks.get(3));
 
-        verify(bankRepository,times(1)).findAll();
+        verify(bankRepository, times(1)).findAll();
     }
 
     @Test
-    public void findAllBanksWithSortByBicTest(){
+    public void findAllBanksWithSortByBicTest() {
         when(bankRepository.findAll()).thenReturn(banks);
         List<BankDTO> notSortedBanks = banks.stream().map(bankService::convertToBankDTO).toList();
-        List<BankDTO> receivedBanks = bankService.findAll(null,null,false,false,true);
-        assertEquals(notSortedBanks.get(0),receivedBanks.get(0));
-        assertEquals(notSortedBanks.get(3),receivedBanks.get(1));
-        assertEquals(notSortedBanks.get(1),receivedBanks.get(2));
-        assertEquals(notSortedBanks.get(2),receivedBanks.get(3));
-        verify(bankRepository,times(1)).findAll();
+        List<BankDTO> receivedBanks = bankService.findAll(null, null, false, false, true);
+        assertEquals(notSortedBanks.get(0), receivedBanks.get(0));
+        assertEquals(notSortedBanks.get(3), receivedBanks.get(1));
+        assertEquals(notSortedBanks.get(1), receivedBanks.get(2));
+        assertEquals(notSortedBanks.get(2), receivedBanks.get(3));
+        verify(bankRepository, times(1)).findAll();
     }
 
     @Test
-    public void findAllBanksWithExistingBicFilterWithSortByNameTest(){
+    public void findAllBanksWithExistingBicFilterWithSortByNameTest() {
         when(bankRepository.findAll()).thenReturn(banks);
         List<BankDTO> notSortedBanks = banks.stream().map(bankService::convertToBankDTO).toList();
-        List<BankDTO> receivedBanks = bankService.findAll(null,"987654321",false,true,true);
-        assertEquals(notSortedBanks.get(1),receivedBanks.get(0));
-        assertEquals(notSortedBanks.get(2),receivedBanks.get(1));
-        verify(bankRepository,times(1)).findAll();
+        List<BankDTO> receivedBanks = bankService.findAll(null, "987654321", false, true, true);
+        assertEquals(notSortedBanks.get(1), receivedBanks.get(0));
+        assertEquals(notSortedBanks.get(2), receivedBanks.get(1));
+        verify(bankRepository, times(1)).findAll();
     }
 
     @Test
-    public void findOneWithExistingIdTest(){
+    public void findOneWithExistingIdTest() {
         Bank existingBank = banks.get(0);
         when(bankRepository.findById(0)).thenReturn(Optional.of(existingBank));
         BankDTO foundBankDTO = bankService.findOne(0);
-        assertEquals(bankService.convertToBankDTO(existingBank),foundBankDTO);
-        verify(bankRepository,times(1)).findById(0);
+        assertEquals(bankService.convertToBankDTO(existingBank), foundBankDTO);
+        verify(bankRepository, times(1)).findById(0);
     }
 
 
     @Test
-    public void findOneWithNotExistingIdTest(){
+    public void findOneWithNotExistingIdTest() {
         when(bankRepository.findById(7)).thenReturn(Optional.empty());
         assertThrows(BankNotFoundException.class, () -> {
             bankService.findOne(7);
         });
-        verify(bankRepository,times(1)).findById(7);
+        verify(bankRepository, times(1)).findById(7);
     }
 
     @Test
-    public void saveBankTest(){
+    public void saveBankTest() {
         BankDTO bankDTO = new BankDTO();
         bankDTO.setName("bank5");
         bankDTO.setBankIdCode("555555555");
@@ -228,7 +225,7 @@ public class BankServiceTest {
     }
 
     @Test
-    public void deleteBankByIdTest(){
+    public void deleteBankByIdTest() {
         List<Bank> lessBanks = new ArrayList<>(banks);
 
         doAnswer(invocation -> {
@@ -242,13 +239,13 @@ public class BankServiceTest {
         bankService.delete(0);
 
 
-        assertEquals(banks.size()-1,lessBanks.size());
-        assertEquals(banks.get(1),lessBanks.get(0));
-        assertEquals(banks.get(2),lessBanks.get(1));
-        assertEquals(banks.get(3),lessBanks.get(2));
+        assertEquals(banks.size() - 1, lessBanks.size());
+        assertEquals(banks.get(1), lessBanks.get(0));
+        assertEquals(banks.get(2), lessBanks.get(1));
+        assertEquals(banks.get(3), lessBanks.get(2));
         verify(bankRepository, times(1)).deleteById(0);
 
-        }
+    }
 
     @Test
     public void deleteNotExistedBankByIdTest() {
