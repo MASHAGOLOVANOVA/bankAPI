@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@Table(name = "Bank")
+@Table(name = "bank")
 public class Bank {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

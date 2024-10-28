@@ -16,7 +16,7 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="Deposit")
+@Table(name="deposit")
 public class Deposit {
 
     @Id
