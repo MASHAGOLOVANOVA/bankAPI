@@ -2,11 +2,8 @@ package gd.testtask.golovanova.bankAPI.controllers;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import gd.testtask.golovanova.bankAPI.dto.BankDTO;
 import gd.testtask.golovanova.bankAPI.dto.ClientDTO;
 import gd.testtask.golovanova.bankAPI.services.ClientService;
-import gd.testtask.golovanova.bankAPI.services.LegalFormService;
-import gd.testtask.golovanova.bankAPI.util.BankNotFoundException;
 import gd.testtask.golovanova.bankAPI.util.ClientNotFoundException;
 import gd.testtask.golovanova.bankAPI.util.LegalFormNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,8 +46,6 @@ public class ClientControllerTest {
 
     private final ObjectMapper objectMapper;
 
-    @MockBean
-    private LegalFormService legalFormService;
 
     @Autowired
     public ClientControllerTest(WebApplicationContext webApplicationContext) {
@@ -59,7 +54,7 @@ public class ClientControllerTest {
     }
 
     @BeforeEach
-    public void setUp(){
+    public void setUp() {
         clientDTOList = new ArrayList<>();
         clientDTO = new ClientDTO();
         ClientDTO clientDTO1 = new ClientDTO();
@@ -84,7 +79,7 @@ public class ClientControllerTest {
 
     @Test
     public void getAllClientsTest() throws Exception {
-        when(clientService.findAll("", "", "", false,false, false, false)).thenReturn(clientDTOList);
+        when(clientService.findAll("", "", "", false, false, false, false)).thenReturn(clientDTOList);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/clients"))
                 .andExpect(status().isOk())
@@ -112,7 +107,7 @@ public class ClientControllerTest {
 
                 );
 
-        verify(clientService, times(1)).findAll("","", "", false,false, false, false);
+        verify(clientService, times(1)).findAll("", "", "", false, false, false, false);
     }
 
     @Test
@@ -130,10 +125,10 @@ public class ClientControllerTest {
 
     @Test
     public void getAllClientsFilterByNameTest() throws Exception {
-        when(clientService.findAll("Client1", "","", false, false, false, false)).thenReturn(List.of(clientDTOList.get(0)));
+        when(clientService.findAll("Client1", "", "", false, false, false, false)).thenReturn(List.of(clientDTOList.get(0)));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/clients")
-                        .param("filter_by_name","Client1"))
+                        .param("filter_by_name", "Client1"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(1)))
@@ -144,15 +139,15 @@ public class ClientControllerTest {
                 .andExpect(jsonPath("$[0].legalFormId").value(clientDTOList.get(0).getLegalFormId())
                 );
 
-        verify(clientService, times(1)).findAll("Client1", "", "", false,false, false, false);
+        verify(clientService, times(1)).findAll("Client1", "", "", false, false, false, false);
     }
 
     @Test
     public void getAllClientsFilterByShortNameTest() throws Exception {
-        when(clientService.findAll("", "c2","", false, false, false, false)).thenReturn(List.of(clientDTOList.get(1)));
+        when(clientService.findAll("", "c2", "", false, false, false, false)).thenReturn(List.of(clientDTOList.get(1)));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/clients")
-                        .param("filter_by_short_name","c2"))
+                        .param("filter_by_short_name", "c2"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(1)))
@@ -163,15 +158,15 @@ public class ClientControllerTest {
                 .andExpect(jsonPath("$[0].legalFormId").value(clientDTOList.get(1).getLegalFormId())
                 );
 
-        verify(clientService, times(1)).findAll("", "c2", "", false,false, false, false);
+        verify(clientService, times(1)).findAll("", "c2", "", false, false, false, false);
     }
 
     @Test
     public void getAllClientsFilterByAddressTest() throws Exception {
-        when(clientService.findAll("", "","c3_address", false, false, false, false)).thenReturn(List.of(clientDTOList.get(2)));
+        when(clientService.findAll("", "", "c3_address", false, false, false, false)).thenReturn(List.of(clientDTOList.get(2)));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/clients")
-                        .param("filter_by_address","c3_address"))
+                        .param("filter_by_address", "c3_address"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(1)))
@@ -182,15 +177,15 @@ public class ClientControllerTest {
                 .andExpect(jsonPath("$[0].legalFormId").value(clientDTOList.get(2).getLegalFormId())
                 );
 
-        verify(clientService, times(1)).findAll("", "", "c3_address", false,false, false, false);
+        verify(clientService, times(1)).findAll("", "", "c3_address", false, false, false, false);
     }
 
     @Test
     public void getAllClientsSortByIdTest() throws Exception {
-        when(clientService.findAll("", "", "", true, false,false, false)).thenReturn(clientDTOList);
+        when(clientService.findAll("", "", "", true, false, false, false)).thenReturn(clientDTOList);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/clients")
-                        .param("sort_by_id","true"))
+                        .param("sort_by_id", "true"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(3)))
@@ -222,10 +217,10 @@ public class ClientControllerTest {
     @Test
     public void getAllClientsSortByNameTest() throws Exception {
 
-        when(clientService.findAll("", "", "",false, true, false,false)).thenReturn(clientDTOList);
+        when(clientService.findAll("", "", "", false, true, false, false)).thenReturn(clientDTOList);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/clients")
-                        .param("sort_by_name","true"))
+                        .param("sort_by_name", "true"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(3)))
@@ -251,16 +246,16 @@ public class ClientControllerTest {
                 .andExpect(jsonPath("$[2].legalFormId").value(clientDTOList.get(2).getLegalFormId())
                 );
 
-        verify(clientService, times(1)).findAll("", "", "", false, true, false,false);
+        verify(clientService, times(1)).findAll("", "", "", false, true, false, false);
     }
 
     @Test
     public void getAllClientsSortByShortNameTest() throws Exception {
 
-        when(clientService.findAll("", "", "",false, false, true,false)).thenReturn(clientDTOList);
+        when(clientService.findAll("", "", "", false, false, true, false)).thenReturn(clientDTOList);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/clients")
-                        .param("sort_by_short_name","true"))
+                        .param("sort_by_short_name", "true"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(3)))
@@ -286,16 +281,16 @@ public class ClientControllerTest {
                 .andExpect(jsonPath("$[2].legalFormId").value(clientDTOList.get(2).getLegalFormId())
                 );
 
-        verify(clientService, times(1)).findAll("", "", "", false, false, true,false);
+        verify(clientService, times(1)).findAll("", "", "", false, false, true, false);
     }
 
     @Test
     public void getAllClientsSortByAddressTest() throws Exception {
 
-        when(clientService.findAll("", "", "",false, false, false,true)).thenReturn(clientDTOList);
+        when(clientService.findAll("", "", "", false, false, false, true)).thenReturn(clientDTOList);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/clients")
-                        .param("sort_by_address","true"))
+                        .param("sort_by_address", "true"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(3)))
@@ -321,7 +316,7 @@ public class ClientControllerTest {
                 .andExpect(jsonPath("$[2].legalFormId").value(clientDTOList.get(2).getLegalFormId())
                 );
 
-        verify(clientService, times(1)).findAll("", "", "", false, false, false,true);
+        verify(clientService, times(1)).findAll("", "", "", false, false, false, true);
     }
 
     @Test
@@ -385,8 +380,6 @@ public class ClientControllerTest {
         clientDTO.setShortName("");
         clientDTO.setAddress("");
 
-
-        System.out.println(clientDTO.getLegalFormId());
         mockMvc.perform(post("/clients")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(clientDTO)))
@@ -413,9 +406,8 @@ public class ClientControllerTest {
                 .andExpect(jsonPath("$.message").value("LegalForm not found"))
                 .andExpect(jsonPath("$.timestamp").exists());
 
-        verify(clientService,times(1)).save(any(ClientDTO.class));
+        verify(clientService, times(1)).save(any(ClientDTO.class));
     }
-
 
 
     @Test
@@ -427,7 +419,7 @@ public class ClientControllerTest {
         clientDTO.setAddress("address");
         clientDTO.setLegalFormId(1);
 
-        doNothing().when(clientService).update(anyInt(),any(ClientDTO.class));
+        doNothing().when(clientService).update(anyInt(), any(ClientDTO.class));
         clientDTOList.add(clientDTO);
 
         mockMvc.perform(put("/clients/1")
@@ -435,7 +427,7 @@ public class ClientControllerTest {
                         .content(objectMapper.writeValueAsString(clientDTO)))
                 .andExpect(status().isOk());
 
-        verify(clientService, times(1)).update(anyInt(),any(ClientDTO.class));
+        verify(clientService, times(1)).update(anyInt(), any(ClientDTO.class));
     }
 
     @Test
@@ -446,7 +438,7 @@ public class ClientControllerTest {
         clientDTO.setShortName("");
         clientDTO.setAddress("");
 
-        doNothing().when(clientService).update(anyInt(),any(ClientDTO.class));
+        doNothing().when(clientService).update(anyInt(), any(ClientDTO.class));
 
         mockMvc.perform(put("/clients/1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -473,9 +465,8 @@ public class ClientControllerTest {
                 .andExpect(jsonPath("$.message").value("LegalForm not found"))
                 .andExpect(jsonPath("$.timestamp").exists());
 
-        verify(clientService,times(1)).update(anyInt(),any(ClientDTO.class));
+        verify(clientService, times(1)).update(anyInt(), any(ClientDTO.class));
     }
-
 
 
     @Test

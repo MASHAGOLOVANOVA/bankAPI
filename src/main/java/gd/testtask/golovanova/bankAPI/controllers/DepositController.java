@@ -45,7 +45,7 @@ public class DepositController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @PatchMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<HttpStatus> updateDeposit(@PathVariable int id, @RequestBody @Valid DepositDTO depositDTO, BindingResult bindingResult) {
         GlobalExceptionHandler.handleValidationErrors(bindingResult, DepositNotUpdatedException.class);
         depositService.update(id, depositDTO);

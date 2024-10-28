@@ -13,16 +13,16 @@ import lombok.*;
 @ToString
 public class DepositDTO {
 
-    @Min(value = 0)
+    @Min(value = 0, message = "percentage should be not less than 0")
     private int percentage;
 
-    @Min(value = 0)
+    @Min(value = 0, message = "period should be not less than 0")
     private int period;
 
-    @NotNull
+    @NotNull(message = "client_id should not be null")
     private int client_id;
 
-    @NotNull
+    @NotNull(message ="client_id should not be null")
     private int bank_id;
 
 }
