@@ -1,7 +1,6 @@
 package gd.testtask.golovanova.bankAPI.services;
 
 
-
 import gd.testtask.golovanova.bankAPI.dto.DepositDTO;
 import gd.testtask.golovanova.bankAPI.models.Bank;
 import gd.testtask.golovanova.bankAPI.models.Client;
@@ -21,7 +20,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -38,6 +36,8 @@ public class DepositServiceTest {
 
     private List<Deposit> depositList;
 
+    private List<DepositDTO> expectedDeposits;
+
     private List<Bank> bankList;
 
     private List<Client> clientList;
@@ -50,6 +50,7 @@ public class DepositServiceTest {
 
     @BeforeEach
     public void setUp() {
+
         depositList = new ArrayList<>();
         bankList = new ArrayList<>();
         clientList = new ArrayList<>();
@@ -116,22 +117,30 @@ public class DepositServiceTest {
         deposit3.setPercentage(12);
         depositList.add(deposit3);
 
+        expectedDeposits = new ArrayList<>();
+        for (Deposit deposit : depositList) {
+            DepositDTO dto = new DepositDTO();
+            dto.setPercentage(deposit.getPercentage());
+            dto.setPeriod(deposit.getPeriod());
+            dto.setClient_id(deposit.getClient().getId());
+            dto.setBank_id(deposit.getBank().getId());
+            expectedDeposits.add(dto);
+        }
     }
 
     @Test
     public void findAllDepositsTest() {
         when(depositRepository.findAll()).thenReturn(depositList);
-        List<DepositDTO> receivedDeposits = depositService.findAll(null, null,  false, false, false, false);
-
+        List<DepositDTO> receivedDeposits = depositService.findAll(null, null, false, false, false, false);
         assertEquals(depositList.size(), receivedDeposits.size());
-        assertIterableEquals(depositList.stream().map(depositService::convertToDepositDTO).collect(Collectors.toList()), receivedDeposits);
+        assertIterableEquals(expectedDeposits, receivedDeposits);
         verify(depositRepository, times(1)).findAll();
     }
 
     @Test
     public void findAllDepositsIfEmptyTest() {
         when(depositRepository.findAll()).thenReturn(Collections.emptyList());
-        List<DepositDTO> receivedClients = depositService.findAll(null, null,  false, false, false, false);
+        List<DepositDTO> receivedClients = depositService.findAll(null, null, false, false, false, false);
         assertTrue(receivedClients.isEmpty());
         verify(depositRepository, times(1)).findAll();
     }
@@ -141,8 +150,8 @@ public class DepositServiceTest {
         when(depositRepository.findAll()).thenReturn(depositList);
         List<DepositDTO> receivedDeposits = depositService.findAll(12, null, false, false, false, false);
         assertEquals(2, receivedDeposits.size());
-        assertEquals(depositService.convertToDepositDTO(depositList.get(0)), receivedDeposits.get(0));
-        assertEquals(depositService.convertToDepositDTO(depositList.get(2)), receivedDeposits.get(1));
+        assertEquals(expectedDeposits.get(0), receivedDeposits.get(0));
+        assertEquals(expectedDeposits.get(2), receivedDeposits.get(1));
         verify(depositRepository, times(1)).findAll();
     }
 
@@ -151,15 +160,15 @@ public class DepositServiceTest {
         when(depositRepository.findAll()).thenReturn(depositList);
         List<DepositDTO> receivedDeposits = depositService.findAll(null, 3, false, false, false, false);
         assertEquals(2, receivedDeposits.size());
-        assertEquals(depositService.convertToDepositDTO(depositList.get(1)), receivedDeposits.get(0));
-        assertEquals(depositService.convertToDepositDTO(depositList.get(2)), receivedDeposits.get(1));
+        assertEquals(expectedDeposits.get(1), receivedDeposits.get(0));
+        assertEquals(expectedDeposits.get(2), receivedDeposits.get(1));
         verify(depositRepository, times(1)).findAll();
     }
 
     @Test
     public void findAllDepositsWithNotExistingPercentageFilterTest() {
         when(depositRepository.findAll()).thenReturn(depositList);
-        List<DepositDTO> receivedBanks = depositService.findAll(12345678, null, false,false, false, false);
+        List<DepositDTO> receivedBanks = depositService.findAll(12345678, null, false, false, false, false);
         assertEquals(0, receivedBanks.size());
         verify(depositRepository, times(1)).findAll();
     }
@@ -167,7 +176,7 @@ public class DepositServiceTest {
     @Test
     public void findAllDepositsWithNotExistingPeriodFilterTest() {
         when(depositRepository.findAll()).thenReturn(depositList);
-        List<DepositDTO> receivedBanks = depositService.findAll(null, 0, false,false, false, false);
+        List<DepositDTO> receivedBanks = depositService.findAll(null, 0, false, false, false, false);
         assertEquals(0, receivedBanks.size());
         verify(depositRepository, times(1)).findAll();
     }
@@ -175,16 +184,19 @@ public class DepositServiceTest {
     @Test
     public void findAllDepositsWithExistingPeriodAndPercentageFilterTest() {
         when(depositRepository.findAll()).thenReturn(depositList);
-        List<DepositDTO> receivedDeposits = depositService.findAll(12, 3, false,false, false, false);
+        List<DepositDTO> receivedDeposits = depositService.findAll(12, 3, false, false, false, false);
         assertEquals(1, receivedDeposits.size());
-        assertEquals(depositService.convertToDepositDTO(depositList.get(2)), receivedDeposits.get(0));
+        DepositDTO depositDTO = depositService.convertToDepositDTO(depositList.get(2));
+        depositDTO.setBank_id(depositList.get(2).getBank().getId());
+        depositDTO.setClient_id(depositList.get(2).getClient().getId());
+        assertEquals(depositDTO, receivedDeposits.get(0));
         verify(depositRepository, times(1)).findAll();
     }
 
     @Test
     public void findAllDepositsWithNotExistingPeriodAndPercentageFilterTest() {
         when(depositRepository.findAll()).thenReturn(depositList);
-        List<DepositDTO> receivedDeposits = depositService.findAll(1, 30, false,false, false, false);
+        List<DepositDTO> receivedDeposits = depositService.findAll(1, 30, false, false, false, false);
         assertEquals(0, receivedDeposits.size());
         verify(depositRepository, times(1)).findAll();
     }
@@ -192,22 +204,20 @@ public class DepositServiceTest {
     @Test
     public void findAllDepositsWithSortByIdTest() {
         when(depositRepository.findAll()).thenReturn(depositList);
-        List<DepositDTO> notSortedDeposits = depositList.stream().map(depositService::convertToDepositDTO).collect(Collectors.toList());
-        List<DepositDTO> receivedDeposits = depositService.findAll(null, null, true, false,false, false);
+        List<DepositDTO> receivedDeposits = depositService.findAll(null, null, true, false, false, false);
         assertEquals(depositList.size(), receivedDeposits.size());
-        assertEquals(notSortedDeposits, receivedDeposits);
+        assertEquals(expectedDeposits, receivedDeposits);
         verify(depositRepository, times(1)).findAll();
     }
 
     @Test
     public void findAllDepositsWithSortByPercentageTest() {
         when(depositRepository.findAll()).thenReturn(depositList);
-        List<DepositDTO> notSortedDeposits = depositList.stream().map(depositService::convertToDepositDTO).toList();
-        List<DepositDTO> receivedDeposits = depositService.findAll(null, null, false, true, false,false);
+        List<DepositDTO> receivedDeposits = depositService.findAll(null, null, false, true, false, false);
 
-        assertEquals(notSortedDeposits.get(1), receivedDeposits.get(0));
-        assertEquals(notSortedDeposits.get(0), receivedDeposits.get(1));
-        assertEquals(notSortedDeposits.get(2), receivedDeposits.get(2));
+        assertEquals(expectedDeposits.get(1), receivedDeposits.get(0));
+        assertEquals(expectedDeposits.get(0), receivedDeposits.get(1));
+        assertEquals(expectedDeposits.get(2), receivedDeposits.get(2));
 
         verify(depositRepository, times(1)).findAll();
     }
@@ -215,12 +225,11 @@ public class DepositServiceTest {
     @Test
     public void findAllDepositsWithSortByPeriodTest() {
         when(depositRepository.findAll()).thenReturn(depositList);
-        List<DepositDTO> notSortedDeposits = depositList.stream().map(depositService::convertToDepositDTO).toList();
-        List<DepositDTO> receivedDeposits = depositService.findAll(null, null, false, false, true,false);
+        List<DepositDTO> receivedDeposits = depositService.findAll(null, null, false, false, true, false);
 
-        assertEquals(notSortedDeposits.get(1), receivedDeposits.get(0));
-        assertEquals(notSortedDeposits.get(2), receivedDeposits.get(1));
-        assertEquals(notSortedDeposits.get(0), receivedDeposits.get(2));
+        assertEquals(expectedDeposits.get(1), receivedDeposits.get(0));
+        assertEquals(expectedDeposits.get(2), receivedDeposits.get(1));
+        assertEquals(expectedDeposits.get(0), receivedDeposits.get(2));
 
         verify(depositRepository, times(1)).findAll();
     }
@@ -228,12 +237,11 @@ public class DepositServiceTest {
     @Test
     public void findAllDepositsWithSortByCreateDateTest() {
         when(depositRepository.findAll()).thenReturn(depositList);
-        List<DepositDTO> notSortedDeposits = depositList.stream().map(depositService::convertToDepositDTO).toList();
-        List<DepositDTO> receivedDeposits = depositService.findAll(null, null, false, false, false,true);
+        List<DepositDTO> receivedDeposits = depositService.findAll(null, null, false, false, false, true);
 
-        assertEquals(notSortedDeposits.get(1), receivedDeposits.get(0));
-        assertEquals(notSortedDeposits.get(2), receivedDeposits.get(1));
-        assertEquals(notSortedDeposits.get(0), receivedDeposits.get(2));
+        assertEquals(expectedDeposits.get(1), receivedDeposits.get(0));
+        assertEquals(expectedDeposits.get(2), receivedDeposits.get(1));
+        assertEquals(expectedDeposits.get(0), receivedDeposits.get(2));
 
         verify(depositRepository, times(1)).findAll();
     }
@@ -243,7 +251,11 @@ public class DepositServiceTest {
         Deposit existingDeposit = depositList.get(0);
         when(depositRepository.findById(0)).thenReturn(Optional.of(existingDeposit));
         DepositDTO foundDepositDTO = depositService.findOne(0);
-        assertEquals(depositService.convertToDepositDTO(existingDeposit), foundDepositDTO);
+
+        DepositDTO depositDTO = depositService.convertToDepositDTO(existingDeposit);
+        depositDTO.setBank_id(existingDeposit.getBank().getId());
+        depositDTO.setClient_id(existingDeposit.getClient().getId());
+        assertEquals(depositDTO, foundDepositDTO);
         verify(depositRepository, times(1)).findById(0);
     }
 
@@ -257,7 +269,7 @@ public class DepositServiceTest {
     }
 
     @Test
-    public void createDepositTest(){
+    public void createDepositTest() {
         DepositDTO d = new DepositDTO();
         d.setPercentage(12);
         d.setPeriod(13);
@@ -319,7 +331,7 @@ public class DepositServiceTest {
 
     @Test
     public void updateDepositSuccessfully() {
-        int depositId=1;
+        int depositId = 1;
         DepositDTO depositDTO = new DepositDTO();
         depositDTO.setBank_id(bankList.get(0).getId());
         depositDTO.setClient_id(clientList.get(0).getId());
@@ -351,7 +363,7 @@ public class DepositServiceTest {
 
     @Test
     public void updateNotExistentDepositThrowsException() {
-        int depositId=10;
+        int depositId = 10;
         DepositDTO depositDTO = new DepositDTO();
         depositDTO.setBank_id(bankList.get(0).getId());
         depositDTO.setClient_id(clientList.get(0).getId());
@@ -370,7 +382,7 @@ public class DepositServiceTest {
 
     @Test
     public void updateDeposit_BankNotFoundExceptionTest() {
-        int depositId=0;
+        int depositId = 0;
         DepositDTO depositDTO = new DepositDTO();
         depositDTO.setBank_id(bankList.get(0).getId());
         depositDTO.setClient_id(clientList.get(0).getId());
@@ -390,7 +402,7 @@ public class DepositServiceTest {
 
     @Test
     public void updateDeposit_ClientNotFoundExceptionTest() {
-        int depositId=0;
+        int depositId = 0;
         DepositDTO depositDTO = new DepositDTO();
         depositDTO.setBank_id(bankList.get(0).getId());
         depositDTO.setClient_id(clientList.get(0).getId());
@@ -407,7 +419,6 @@ public class DepositServiceTest {
         verify(depositRepository).findById(depositId);
         verify(depositRepository, never()).save(any(Deposit.class));
     }
-
 
 
 }

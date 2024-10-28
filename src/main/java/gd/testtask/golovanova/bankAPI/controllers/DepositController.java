@@ -8,7 +8,6 @@ import gd.testtask.golovanova.bankAPI.util.DepositNotUpdatedException;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +22,7 @@ public class DepositController {
     public DepositController(DepositService depositService) {
         this.depositService = depositService;
     }
+
     @GetMapping
     public List<DepositDTO> getDeposits(@RequestParam(value = "sort_by_id", required = false, defaultValue = "false") boolean sortById,
                                         @RequestParam(value = "sort_by_percentage", required = false, defaultValue = "false") boolean sortByPercentage,
@@ -30,7 +30,7 @@ public class DepositController {
                                         @RequestParam(value = "sort_by_create_date", required = false, defaultValue = "false") boolean sortByCreateDate,
                                         @RequestParam(value = "filter_by_percentage", required = false) Integer filterByPercentage,
                                         @RequestParam(value = "filter_by_period", required = false) Integer filterByPeriod) {
-        return depositService.findAll(filterByPercentage,filterByPeriod,sortById,sortByPercentage,sortByPeriod,sortByCreateDate);
+        return depositService.findAll(filterByPercentage, filterByPeriod, sortById, sortByPercentage, sortByPeriod, sortByCreateDate);
     }
 
     @GetMapping("/{id}")

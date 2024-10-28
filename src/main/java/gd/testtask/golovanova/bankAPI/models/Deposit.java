@@ -16,32 +16,32 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="deposit")
+@Table(name = "deposit")
 public class Deposit {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name="id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
 
     @ManyToOne
-    @JoinColumn(name="client_id",referencedColumnName = "id")
+    @JoinColumn(name = "client_id", referencedColumnName = "id")
     private Client client;
 
     @ManyToOne
-    @JoinColumn(name="bank_id",referencedColumnName = "id")
+    @JoinColumn(name = "bank_id", referencedColumnName = "id")
     private Bank bank;
 
-    @Column(name="create_date")
+    @Column(name = "create_date")
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "dd.MM.yyyy")
     private Date createDate;
 
-    @Column(name="percentage")
+    @Column(name = "percentage")
     @Min(value = 0)
     private int percentage;
 
-    @Column(name="period")
+    @Column(name = "period")
     @Min(value = 0)
     private int period;
 }

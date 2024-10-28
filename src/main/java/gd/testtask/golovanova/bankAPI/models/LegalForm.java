@@ -14,7 +14,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="legalform")
+@Table(name = "legalform")
 public class LegalForm {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

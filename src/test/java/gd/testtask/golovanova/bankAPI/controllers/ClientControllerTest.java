@@ -61,19 +61,19 @@ public class ClientControllerTest {
         clientDTO1.setName("Client1");
         clientDTO1.setShortName("c1");
         clientDTO1.setAddress("c1_address");
-        clientDTO1.setLegalFormId(1);
+        clientDTO1.setLegal_form_id(1);
         clientDTOList.add(clientDTO1);
         ClientDTO clientDTO2 = new ClientDTO();
         clientDTO2.setName("Client2");
         clientDTO2.setShortName("c2");
         clientDTO2.setAddress("c2_address");
-        clientDTO2.setLegalFormId(1);
+        clientDTO2.setLegal_form_id(1);
         clientDTOList.add(clientDTO2);
         ClientDTO clientDTO3 = new ClientDTO();
         clientDTO3.setName("Client3");
         clientDTO3.setShortName("c3");
         clientDTO3.setAddress("c3_address");
-        clientDTO3.setLegalFormId(2);
+        clientDTO3.setLegal_form_id(2);
         clientDTOList.add(clientDTO3);
     }
 
@@ -89,21 +89,21 @@ public class ClientControllerTest {
                 .andExpect(jsonPath("$[0].name").value(clientDTOList.get(0).getName()))
                 .andExpect(jsonPath("$[0].shortName").value(clientDTOList.get(0).getShortName()))
                 .andExpect(jsonPath("$[0].address").value(clientDTOList.get(0).getAddress()))
-                .andExpect(jsonPath("$[0].legalFormId").value(clientDTOList.get(0).getLegalFormId()))
+                .andExpect(jsonPath("$[0].legal_form_id").value(clientDTOList.get(0).getLegal_form_id()))
 
 
                 .andExpect(jsonPath("$[1].id").doesNotExist())
                 .andExpect(jsonPath("$[1].name").value(clientDTOList.get(1).getName()))
                 .andExpect(jsonPath("$[1].shortName").value(clientDTOList.get(1).getShortName()))
                 .andExpect(jsonPath("$[1].address").value(clientDTOList.get(1).getAddress()))
-                .andExpect(jsonPath("$[1].legalFormId").value(clientDTOList.get(1).getLegalFormId()))
+                .andExpect(jsonPath("$[1].legal_form_id").value(clientDTOList.get(1).getLegal_form_id()))
 
 
                 .andExpect(jsonPath("$[2].id").doesNotExist())
                 .andExpect(jsonPath("$[2].name").value(clientDTOList.get(2).getName()))
                 .andExpect(jsonPath("$[2].shortName").value(clientDTOList.get(2).getShortName()))
                 .andExpect(jsonPath("$[2].address").value(clientDTOList.get(2).getAddress()))
-                .andExpect(jsonPath("$[2].legalFormId").value(clientDTOList.get(2).getLegalFormId())
+                .andExpect(jsonPath("$[2].legal_form_id").value(clientDTOList.get(2).getLegal_form_id())
 
                 );
 
@@ -136,7 +136,7 @@ public class ClientControllerTest {
                 .andExpect(jsonPath("$[0].name").value(clientDTOList.get(0).getName()))
                 .andExpect(jsonPath("$[0].shortName").value(clientDTOList.get(0).getShortName()))
                 .andExpect(jsonPath("$[0].address").value(clientDTOList.get(0).getAddress()))
-                .andExpect(jsonPath("$[0].legalFormId").value(clientDTOList.get(0).getLegalFormId())
+                .andExpect(jsonPath("$[0].legal_form_id").value(clientDTOList.get(0).getLegal_form_id())
                 );
 
         verify(clientService, times(1)).findAll("Client1", "", "", false, false, false, false);
@@ -155,7 +155,7 @@ public class ClientControllerTest {
                 .andExpect(jsonPath("$[0].name").value(clientDTOList.get(1).getName()))
                 .andExpect(jsonPath("$[0].shortName").value(clientDTOList.get(1).getShortName()))
                 .andExpect(jsonPath("$[0].address").value(clientDTOList.get(1).getAddress()))
-                .andExpect(jsonPath("$[0].legalFormId").value(clientDTOList.get(1).getLegalFormId())
+                .andExpect(jsonPath("$[0].legal_form_id").value(clientDTOList.get(1).getLegal_form_id())
                 );
 
         verify(clientService, times(1)).findAll("", "c2", "", false, false, false, false);
@@ -174,7 +174,7 @@ public class ClientControllerTest {
                 .andExpect(jsonPath("$[0].name").value(clientDTOList.get(2).getName()))
                 .andExpect(jsonPath("$[0].shortName").value(clientDTOList.get(2).getShortName()))
                 .andExpect(jsonPath("$[0].address").value(clientDTOList.get(2).getAddress()))
-                .andExpect(jsonPath("$[0].legalFormId").value(clientDTOList.get(2).getLegalFormId())
+                .andExpect(jsonPath("$[0].legal_form_id").value(clientDTOList.get(2).getLegal_form_id())
                 );
 
         verify(clientService, times(1)).findAll("", "", "c3_address", false, false, false, false);
@@ -193,21 +193,21 @@ public class ClientControllerTest {
                 .andExpect(jsonPath("$[0].name").value(clientDTOList.get(0).getName()))
                 .andExpect(jsonPath("$[0].shortName").value(clientDTOList.get(0).getShortName()))
                 .andExpect(jsonPath("$[0].address").value(clientDTOList.get(0).getAddress()))
-                .andExpect(jsonPath("$[0].legalFormId").value(clientDTOList.get(0).getLegalFormId()))
+                .andExpect(jsonPath("$[0].legal_form_id").value(clientDTOList.get(0).getLegal_form_id()))
 
 
                 .andExpect(jsonPath("$[1].id").doesNotExist())
                 .andExpect(jsonPath("$[1].name").value(clientDTOList.get(1).getName()))
                 .andExpect(jsonPath("$[1].shortName").value(clientDTOList.get(1).getShortName()))
                 .andExpect(jsonPath("$[1].address").value(clientDTOList.get(1).getAddress()))
-                .andExpect(jsonPath("$[1].legalFormId").value(clientDTOList.get(1).getLegalFormId()))
+                .andExpect(jsonPath("$[1].legal_form_id").value(clientDTOList.get(1).getLegal_form_id()))
 
 
                 .andExpect(jsonPath("$[2].id").doesNotExist())
                 .andExpect(jsonPath("$[2].name").value(clientDTOList.get(2).getName()))
                 .andExpect(jsonPath("$[2].shortName").value(clientDTOList.get(2).getShortName()))
                 .andExpect(jsonPath("$[2].address").value(clientDTOList.get(2).getAddress()))
-                .andExpect(jsonPath("$[2].legalFormId").value(clientDTOList.get(2).getLegalFormId())
+                .andExpect(jsonPath("$[2].legal_form_id").value(clientDTOList.get(2).getLegal_form_id())
                 );
 
         verify(clientService, times(1)).findAll("", "", "", true, false, false, false);
@@ -229,21 +229,21 @@ public class ClientControllerTest {
                 .andExpect(jsonPath("$[0].name").value(clientDTOList.get(0).getName()))
                 .andExpect(jsonPath("$[0].shortName").value(clientDTOList.get(0).getShortName()))
                 .andExpect(jsonPath("$[0].address").value(clientDTOList.get(0).getAddress()))
-                .andExpect(jsonPath("$[0].legalFormId").value(clientDTOList.get(0).getLegalFormId()))
+                .andExpect(jsonPath("$[0].legal_form_id").value(clientDTOList.get(0).getLegal_form_id()))
 
 
                 .andExpect(jsonPath("$[1].id").doesNotExist())
                 .andExpect(jsonPath("$[1].name").value(clientDTOList.get(1).getName()))
                 .andExpect(jsonPath("$[1].shortName").value(clientDTOList.get(1).getShortName()))
                 .andExpect(jsonPath("$[1].address").value(clientDTOList.get(1).getAddress()))
-                .andExpect(jsonPath("$[1].legalFormId").value(clientDTOList.get(1).getLegalFormId()))
+                .andExpect(jsonPath("$[1].legal_form_id").value(clientDTOList.get(1).getLegal_form_id()))
 
 
                 .andExpect(jsonPath("$[2].id").doesNotExist())
                 .andExpect(jsonPath("$[2].name").value(clientDTOList.get(2).getName()))
                 .andExpect(jsonPath("$[2].shortName").value(clientDTOList.get(2).getShortName()))
                 .andExpect(jsonPath("$[2].address").value(clientDTOList.get(2).getAddress()))
-                .andExpect(jsonPath("$[2].legalFormId").value(clientDTOList.get(2).getLegalFormId())
+                .andExpect(jsonPath("$[2].legal_form_id").value(clientDTOList.get(2).getLegal_form_id())
                 );
 
         verify(clientService, times(1)).findAll("", "", "", false, true, false, false);
@@ -264,21 +264,21 @@ public class ClientControllerTest {
                 .andExpect(jsonPath("$[0].name").value(clientDTOList.get(0).getName()))
                 .andExpect(jsonPath("$[0].shortName").value(clientDTOList.get(0).getShortName()))
                 .andExpect(jsonPath("$[0].address").value(clientDTOList.get(0).getAddress()))
-                .andExpect(jsonPath("$[0].legalFormId").value(clientDTOList.get(0).getLegalFormId()))
+                .andExpect(jsonPath("$[0].legal_form_id").value(clientDTOList.get(0).getLegal_form_id()))
 
 
                 .andExpect(jsonPath("$[1].id").doesNotExist())
                 .andExpect(jsonPath("$[1].name").value(clientDTOList.get(1).getName()))
                 .andExpect(jsonPath("$[1].shortName").value(clientDTOList.get(1).getShortName()))
                 .andExpect(jsonPath("$[1].address").value(clientDTOList.get(1).getAddress()))
-                .andExpect(jsonPath("$[1].legalFormId").value(clientDTOList.get(1).getLegalFormId()))
+                .andExpect(jsonPath("$[1].legal_form_id").value(clientDTOList.get(1).getLegal_form_id()))
 
 
                 .andExpect(jsonPath("$[2].id").doesNotExist())
                 .andExpect(jsonPath("$[2].name").value(clientDTOList.get(2).getName()))
                 .andExpect(jsonPath("$[2].shortName").value(clientDTOList.get(2).getShortName()))
                 .andExpect(jsonPath("$[2].address").value(clientDTOList.get(2).getAddress()))
-                .andExpect(jsonPath("$[2].legalFormId").value(clientDTOList.get(2).getLegalFormId())
+                .andExpect(jsonPath("$[2].legal_form_id").value(clientDTOList.get(2).getLegal_form_id())
                 );
 
         verify(clientService, times(1)).findAll("", "", "", false, false, true, false);
@@ -299,21 +299,21 @@ public class ClientControllerTest {
                 .andExpect(jsonPath("$[0].name").value(clientDTOList.get(0).getName()))
                 .andExpect(jsonPath("$[0].shortName").value(clientDTOList.get(0).getShortName()))
                 .andExpect(jsonPath("$[0].address").value(clientDTOList.get(0).getAddress()))
-                .andExpect(jsonPath("$[0].legalFormId").value(clientDTOList.get(0).getLegalFormId()))
+                .andExpect(jsonPath("$[0].legal_form_id").value(clientDTOList.get(0).getLegal_form_id()))
 
 
                 .andExpect(jsonPath("$[1].id").doesNotExist())
                 .andExpect(jsonPath("$[1].name").value(clientDTOList.get(1).getName()))
                 .andExpect(jsonPath("$[1].shortName").value(clientDTOList.get(1).getShortName()))
                 .andExpect(jsonPath("$[1].address").value(clientDTOList.get(1).getAddress()))
-                .andExpect(jsonPath("$[1].legalFormId").value(clientDTOList.get(1).getLegalFormId()))
+                .andExpect(jsonPath("$[1].legal_form_id").value(clientDTOList.get(1).getLegal_form_id()))
 
 
                 .andExpect(jsonPath("$[2].id").doesNotExist())
                 .andExpect(jsonPath("$[2].name").value(clientDTOList.get(2).getName()))
                 .andExpect(jsonPath("$[2].shortName").value(clientDTOList.get(2).getShortName()))
                 .andExpect(jsonPath("$[2].address").value(clientDTOList.get(2).getAddress()))
-                .andExpect(jsonPath("$[2].legalFormId").value(clientDTOList.get(2).getLegalFormId())
+                .andExpect(jsonPath("$[2].legal_form_id").value(clientDTOList.get(2).getLegal_form_id())
                 );
 
         verify(clientService, times(1)).findAll("", "", "", false, false, false, true);
@@ -331,7 +331,7 @@ public class ClientControllerTest {
                 .andExpect(jsonPath("$.name").value(clientDTOList.get(0).getName()))
                 .andExpect(jsonPath("$.shortName").value((clientDTOList.get(0).getShortName())))
                 .andExpect(jsonPath("$.address").value((clientDTOList.get(0).getAddress())))
-                .andExpect(jsonPath("$.legalFormId").value((clientDTOList.get(0).getLegalFormId())));
+                .andExpect(jsonPath("$.legal_form_id").value((clientDTOList.get(0).getLegal_form_id())));
 
 
         verify(clientService, times(1)).findOne(1);
@@ -358,7 +358,7 @@ public class ClientControllerTest {
         clientDTO.setName("name");
         clientDTO.setShortName("n");
         clientDTO.setAddress("address");
-        clientDTO.setLegalFormId(1);
+        clientDTO.setLegal_form_id(1);
 
         doNothing().when(clientService).save(any(ClientDTO.class));
         clientDTOList.add(clientDTO);
@@ -417,7 +417,7 @@ public class ClientControllerTest {
         clientDTO.setName("long name");
         clientDTO.setShortName("name");
         clientDTO.setAddress("address");
-        clientDTO.setLegalFormId(1);
+        clientDTO.setLegal_form_id(1);
 
         doNothing().when(clientService).update(anyInt(), any(ClientDTO.class));
         clientDTOList.add(clientDTO);

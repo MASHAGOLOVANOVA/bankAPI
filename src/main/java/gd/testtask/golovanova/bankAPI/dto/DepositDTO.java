@@ -22,7 +22,7 @@ public class DepositDTO {
     @NotNull(message = "client_id should not be null")
     private int client_id;
 
-    @NotNull(message ="client_id should not be null")
+    @NotNull(message = "bank_id should not be null")
     private int bank_id;
 
 }

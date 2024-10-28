@@ -1,10 +1,9 @@
 package gd.testtask.golovanova.bankAPI.services;
 
-import gd.testtask.golovanova.bankAPI.dto.LegalFormDTO;
+
 import gd.testtask.golovanova.bankAPI.models.LegalForm;
 import gd.testtask.golovanova.bankAPI.repositories.LegalFormRepository;
 import gd.testtask.golovanova.bankAPI.util.LegalFormNotFoundException;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

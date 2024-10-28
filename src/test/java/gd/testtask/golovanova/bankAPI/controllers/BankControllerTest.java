@@ -50,7 +50,7 @@ public class BankControllerTest {
     }
 
     @BeforeEach
-    public void setUp(){
+    public void setUp() {
         bankDTOList = new ArrayList<>();
         bankDTO = new BankDTO();
         BankDTO bankDTO1 = new BankDTO();
@@ -111,7 +111,7 @@ public class BankControllerTest {
         when(bankService.findAll("Bank1", "", false, false, false)).thenReturn(List.of(bankDTOList.get(0)));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/banks")
-                        .param("filter_by_name","Bank1"))
+                        .param("filter_by_name", "Bank1"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(1)))
@@ -128,7 +128,7 @@ public class BankControllerTest {
         when(bankService.findAll("", "123456788", false, false, false)).thenReturn(List.of(bankDTOList.get(1)));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/banks")
-                        .param("filter_by_bankIdCode","123456788"))
+                        .param("filter_by_bankIdCode", "123456788"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(1)))
@@ -145,7 +145,7 @@ public class BankControllerTest {
         when(bankService.findAll("", "", true, false, false)).thenReturn(bankDTOList);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/banks")
-                        .param("sort_by_id","true"))
+                        .param("sort_by_id", "true"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(3)))
@@ -170,12 +170,12 @@ public class BankControllerTest {
         BankDTO bankDTO1 = new BankDTO();
         bankDTO1.setName("Aank1");
         bankDTO1.setBankIdCode("123456789");
-        bankDTOList.add(0,bankDTO1);
+        bankDTOList.add(0, bankDTO1);
 
         when(bankService.findAll("", "", false, true, false)).thenReturn(bankDTOList);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/banks")
-                        .param("sort_by_name","true"))
+                        .param("sort_by_name", "true"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(4)))
@@ -208,7 +208,7 @@ public class BankControllerTest {
         when(bankService.findAll("", "", false, false, true)).thenReturn(bankDTOList);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/banks")
-                        .param("sort_by_bank_id_code","true"))
+                        .param("sort_by_bank_id_code", "true"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(3)))
@@ -224,7 +224,7 @@ public class BankControllerTest {
                 .andExpect(jsonPath("$[2].name").value(bankDTOList.get(2).getName()))
                 .andExpect(jsonPath("$[2].bankIdCode").value(bankDTOList.get(2).getBankIdCode())
 
-                 );
+                );
 
         verify(bankService, times(1)).findAll("", "", false, false, true);
     }
@@ -235,7 +235,7 @@ public class BankControllerTest {
         when(bankService.findAll("lalala", "", false, false, false)).thenReturn(emptyList());
 
         mockMvc.perform(MockMvcRequestBuilders.get("/banks")
-                        .param("filter_by_name","lalala"))
+                        .param("filter_by_name", "lalala"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(0))
@@ -250,7 +250,7 @@ public class BankControllerTest {
         when(bankService.findAll("", "bic", false, false, false)).thenReturn(emptyList());
 
         mockMvc.perform(MockMvcRequestBuilders.get("/banks")
-                        .param("filter_by_bankIdCode","bic"))
+                        .param("filter_by_bankIdCode", "bic"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(0))
@@ -330,7 +330,7 @@ public class BankControllerTest {
         bankDTO.setName("name");
         bankDTO.setBankIdCode("123454321");
 
-        doNothing().when(bankService).update(anyInt(),any(BankDTO.class));
+        doNothing().when(bankService).update(anyInt(), any(BankDTO.class));
         bankDTOList.add(bankDTO);
 
         mockMvc.perform(put("/banks/1")
@@ -338,7 +338,7 @@ public class BankControllerTest {
                         .content(objectMapper.writeValueAsString(bankDTO)))
                 .andExpect(status().isOk());
 
-        verify(bankService, times(1)).update(anyInt(),any(BankDTO.class));
+        verify(bankService, times(1)).update(anyInt(), any(BankDTO.class));
     }
 
     @Test
@@ -348,7 +348,7 @@ public class BankControllerTest {
         bankDTO.setName("");
         bankDTO.setBankIdCode("123456");
 
-        doNothing().when(bankService).update(anyInt(),any(BankDTO.class));
+        doNothing().when(bankService).update(anyInt(), any(BankDTO.class));
 
         mockMvc.perform(put("/banks/1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -356,7 +356,7 @@ public class BankControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value(containsString("Name should be between 1 and 300 characters"))) // Ожидаем сообщение об ошибке
                 .andExpect(jsonPath("$.message").value(containsString("Bank id code must have 9 numbers")));// Ожидаем сообщение об ошибке
-        }
+    }
 
     @Test
     public void deleteBankTest() throws Exception {
@@ -380,7 +380,6 @@ public class BankControllerTest {
 
         verify(bankService, times(1)).delete(bankId);
     }
-
 
 
 }

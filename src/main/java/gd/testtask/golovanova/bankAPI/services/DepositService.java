@@ -15,10 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -49,7 +46,7 @@ public class DepositService {
         }
         if (filterByPeriod != null) {
             deposits = deposits.stream()
-                    .filter(deposit -> deposit.getPeriod()==filterByPeriod)
+                    .filter(deposit -> deposit.getPeriod() == filterByPeriod)
                     .collect(Collectors.toList());
         }
 
@@ -64,12 +61,23 @@ public class DepositService {
             deposits.sort(Comparator.comparing(Deposit::getCreateDate));
         }
 
-        return deposits.stream().map(this::convertToDepositDTO).collect(Collectors.toList());
+        List<DepositDTO> depositDTOs = new ArrayList<>();
+        for (Deposit deposit : deposits) {
+            DepositDTO depositDTO = modelMapper.map(deposit, DepositDTO.class);
+            depositDTO.setBank_id(deposit.getBank().getId());
+            depositDTO.setClient_id(deposit.getClient().getId());
+            depositDTOs.add(depositDTO);
+
+        }
+        return depositDTOs;
     }
 
     public DepositDTO findOne(int id) {
         Optional<Deposit> deposit = depositRepository.findById(id);
-        return convertToDepositDTO(deposit.orElseThrow(DepositNotFoundException::new));
+        DepositDTO depositDTO = convertToDepositDTO(deposit.orElseThrow(DepositNotFoundException::new));
+        depositDTO.setBank_id(deposit.get().getBank().getId());
+        depositDTO.setClient_id(deposit.get().getClient().getId());
+        return depositDTO;
     }
 
     @Transactional
@@ -94,7 +102,7 @@ public class DepositService {
     }
 
     @Transactional
-    public void update(int id,DepositDTO depositDTO) {
+    public void update(int id, DepositDTO depositDTO) {
         Deposit deposit = depositRepository.findById(id)
                 .orElseThrow(DepositNotFoundException::new);
         Bank bank = bankRepository.findById(depositDTO.getBank_id())
@@ -107,6 +115,7 @@ public class DepositService {
         deposit.setPeriod(depositDTO.getPeriod());
         depositRepository.save(deposit);
     }
+
     public Deposit convertToDeposit(DepositDTO depositDTO) {
         return modelMapper.map(depositDTO, Deposit.class);
     }

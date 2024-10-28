@@ -82,7 +82,6 @@ public class GlobalExceptionHandler {
         DepositErrorResponse response = new DepositErrorResponse(
                 "Deposit not found", System.currentTimeMillis()
         );
-        // http response + 404 status
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
@@ -93,7 +92,6 @@ public class GlobalExceptionHandler {
         );
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
-
 
 
     @ExceptionHandler(LegalFormNotFoundException.class)

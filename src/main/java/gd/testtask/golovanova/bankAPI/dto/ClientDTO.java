@@ -23,6 +23,6 @@ public class ClientDTO {
     private String address;
 
     @NotNull
-    private int legalFormId;
+    private int legal_form_id;
 
 }

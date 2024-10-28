@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -33,6 +32,8 @@ public class ClientServiceTest {
     private ClientService clientService;
 
     private List<Client> clients;
+
+    private List<ClientDTO> expectedClients;
 
     private List<LegalForm> legalForms;
 
@@ -88,15 +89,23 @@ public class ClientServiceTest {
         c4.getLegalForm().getClients().add(c4);
         clients.add(c4);
 
+        expectedClients = new ArrayList<>();
+        for (Client client : clients) {
+            ClientDTO clientDTO = new ClientDTO();
+            clientDTO.setName(client.getName());
+            clientDTO.setShortName(client.getShortName());
+            clientDTO.setAddress(client.getAddress());
+            clientDTO.setLegal_form_id(client.getLegalForm().getId());
+            expectedClients.add(clientDTO);
+        }
     }
 
     @Test
     public void findAllClientsTest() {
         when(clientRepository.findAll()).thenReturn(clients);
         List<ClientDTO> receivedClients = clientService.findAll(null, null, null, false, false, false, false);
-
         assertEquals(clients.size(), receivedClients.size());
-        assertIterableEquals(clients.stream().map(clientService::convertToClientDTO).collect(Collectors.toList()), receivedClients);
+        assertIterableEquals(expectedClients, receivedClients);
         verify(clientRepository, times(1)).findAll();
     }
 
@@ -113,8 +122,9 @@ public class ClientServiceTest {
     public void findAllClientsWithExistingNameFilterTest() {
         when(clientRepository.findAll()).thenReturn(clients);
         List<ClientDTO> receivedClients = clientService.findAll("client1", "", null, false, false, false, false);
+
         assertEquals(1, receivedClients.size());
-        assertEquals(clientService.convertToClientDTO(clients.get(0)), receivedClients.get(0));
+        assertEquals(expectedClients.get(0), receivedClients.get(0));
         verify(clientRepository, times(1)).findAll();
     }
 
@@ -130,8 +140,9 @@ public class ClientServiceTest {
     public void findAllClientsWithExistingShortNameFilterTest() {
         when(clientRepository.findAll()).thenReturn(clients);
         List<ClientDTO> receivedClients = clientService.findAll("", "c1", null, false, false, false, false);
+
         assertEquals(1, receivedClients.size());
-        assertEquals(clientService.convertToClientDTO(clients.get(0)), receivedClients.get(0));
+        assertEquals(expectedClients.get(0), receivedClients.get(0));
         verify(clientRepository, times(1)).findAll();
     }
 
@@ -148,7 +159,8 @@ public class ClientServiceTest {
         when(clientRepository.findAll()).thenReturn(clients);
         List<ClientDTO> receivedClients = clientService.findAll("", "", "c1_address", false, false, false, false);
         assertEquals(1, receivedClients.size());
-        assertEquals(clientService.convertToClientDTO(clients.get(0)), receivedClients.get(0));
+
+        assertEquals(expectedClients.get(0), receivedClients.get(0));
         verify(clientRepository, times(1)).findAll();
     }
 
@@ -164,8 +176,9 @@ public class ClientServiceTest {
     public void findAllClientsWithExistingNameAndShortNameFilterTest() {
         when(clientRepository.findAll()).thenReturn(clients);
         List<ClientDTO> receivedClients = clientService.findAll("client1", "c1", null, false, false, false, false);
+
         assertEquals(1, receivedClients.size());
-        assertEquals(clientService.convertToClientDTO(clients.get(0)), receivedClients.get(0));
+        assertEquals(expectedClients.get(0), receivedClients.get(0));
         verify(clientRepository, times(1)).findAll();
     }
 
@@ -180,10 +193,10 @@ public class ClientServiceTest {
     @Test
     public void findAllClientsWithSortByIdTest() {
         when(clientRepository.findAll()).thenReturn(clients);
-        List<ClientDTO> notSortedClients = clients.stream().map(clientService::convertToClientDTO).toList();
+
         List<ClientDTO> receivedClients = clientService.findAll(null, null, null, true, false, false, false);
         assertEquals(clients.size(), receivedClients.size());
-        assertEquals(notSortedClients, receivedClients);
+        assertEquals(expectedClients, receivedClients);
         verify(clientRepository, times(1)).findAll();
     }
 
@@ -191,13 +204,13 @@ public class ClientServiceTest {
     @Test
     public void findAllClientsWithSortByNameTest() {
         when(clientRepository.findAll()).thenReturn(clients);
-        List<ClientDTO> notSortedClients = clients.stream().map(clientService::convertToClientDTO).toList();
         List<ClientDTO> receivedClients = clientService.findAll(null, null, null, false, true, false, false);
 
-        assertEquals(notSortedClients.get(3), receivedClients.get(0));
-        assertEquals(notSortedClients.get(0), receivedClients.get(1));
-        assertEquals(notSortedClients.get(1), receivedClients.get(2));
-        assertEquals(notSortedClients.get(2), receivedClients.get(3));
+
+        assertEquals(expectedClients.get(3), receivedClients.get(0));
+        assertEquals(expectedClients.get(0), receivedClients.get(1));
+        assertEquals(expectedClients.get(1), receivedClients.get(2));
+        assertEquals(expectedClients.get(2), receivedClients.get(3));
 
         verify(clientRepository, times(1)).findAll();
     }
@@ -205,13 +218,12 @@ public class ClientServiceTest {
     @Test
     public void findAllClientsWithSortByShortNameTest() {
         when(clientRepository.findAll()).thenReturn(clients);
-        List<ClientDTO> notSortedClients = clients.stream().map(clientService::convertToClientDTO).toList();
         List<ClientDTO> receivedClients = clientService.findAll(null, null, null, false, false, true, false);
 
-        assertEquals(notSortedClients.get(3), receivedClients.get(0));
-        assertEquals(notSortedClients.get(0), receivedClients.get(1));
-        assertEquals(notSortedClients.get(1), receivedClients.get(2));
-        assertEquals(notSortedClients.get(2), receivedClients.get(3));
+        assertEquals(expectedClients.get(3), receivedClients.get(0));
+        assertEquals(expectedClients.get(0), receivedClients.get(1));
+        assertEquals(expectedClients.get(1), receivedClients.get(2));
+        assertEquals(expectedClients.get(2), receivedClients.get(3));
 
         verify(clientRepository, times(1)).findAll();
     }
@@ -219,12 +231,11 @@ public class ClientServiceTest {
     @Test
     public void findAllClientsWithSortByAddressTest() {
         when(clientRepository.findAll()).thenReturn(clients);
-        List<ClientDTO> notSortedClients = clients.stream().map(clientService::convertToClientDTO).toList();
         List<ClientDTO> receivedClients = clientService.findAll(null, null, null, false, false, false, true);
-        assertEquals(notSortedClients.get(2), receivedClients.get(0));
-        assertEquals(notSortedClients.get(0), receivedClients.get(1));
-        assertEquals(notSortedClients.get(1), receivedClients.get(2));
-        assertEquals(notSortedClients.get(3), receivedClients.get(3));
+        assertEquals(expectedClients.get(2), receivedClients.get(0));
+        assertEquals(expectedClients.get(0), receivedClients.get(1));
+        assertEquals(expectedClients.get(1), receivedClients.get(2));
+        assertEquals(expectedClients.get(3), receivedClients.get(3));
 
         verify(clientRepository, times(1)).findAll();
     }
@@ -234,7 +245,9 @@ public class ClientServiceTest {
         Client existingClient = clients.get(0);
         when(clientRepository.findById(0)).thenReturn(Optional.of(existingClient));
         ClientDTO foundClientDTO = clientService.findOne(0);
-        assertEquals(clientService.convertToClientDTO(existingClient), foundClientDTO);
+        ClientDTO expectedClientDTO = clientService.convertToClientDTO(existingClient);
+        expectedClientDTO.setLegal_form_id(existingClient.getLegalForm().getId());
+        assertEquals(expectedClientDTO, foundClientDTO);
         verify(clientRepository, times(1)).findById(0);
     }
 
@@ -254,13 +267,13 @@ public class ClientServiceTest {
         clientDTO.setName("c555555555");
         clientDTO.setShortName("c55");
         clientDTO.setAddress("address");
-        clientDTO.setLegalFormId(1);
+        clientDTO.setLegal_form_id(1);
 
 
         when(legalFormService.findOne(anyInt())).thenReturn(legalForms.get(0));
         when(clientRepository.save(any(Client.class))).thenAnswer(invocation -> {
             Client c = clientService.convertToClient(clientDTO);
-            c.setLegalForm(legalForms.get(clientDTO.getLegalFormId() - 1));
+            c.setLegalForm(legalForms.get(clientDTO.getLegal_form_id() - 1));
             clients.add(c);
             return null;
         });
@@ -270,7 +283,7 @@ public class ClientServiceTest {
         assertEquals(clients.get(4).getName(), clientDTO.getName());
         assertEquals(clients.get(4).getShortName(), clientDTO.getShortName());
         assertEquals(clients.get(4).getAddress(), clientDTO.getAddress());
-        assertEquals(clients.get(4).getLegalForm().getId(), clientDTO.getLegalFormId());
+        assertEquals(clients.get(4).getLegalForm().getId(), clientDTO.getLegal_form_id());
     }
 
     @Test
@@ -279,7 +292,7 @@ public class ClientServiceTest {
         clientDTO.setName("c555555555");
         clientDTO.setShortName("c55");
         clientDTO.setAddress("address");
-        clientDTO.setLegalFormId(3);
+        clientDTO.setLegal_form_id(3);
 
         when(legalFormService.findOne(anyInt())).thenThrow(new LegalFormNotFoundException());
 
@@ -332,7 +345,7 @@ public class ClientServiceTest {
         clientDTO.setName("client new");
         clientDTO.setShortName("c new");
         clientDTO.setAddress("c adress new");
-        clientDTO.setLegalFormId(1);
+        clientDTO.setLegal_form_id(1);
 
         when(legalFormService.findOne(anyInt())).thenReturn(legalForms.get(0));
         when(clientRepository.findById(clientId)).thenReturn(Optional.of(clients.get(clientId)));
@@ -362,7 +375,7 @@ public class ClientServiceTest {
         clientDTO.setName("client new");
         clientDTO.setShortName("c new");
         clientDTO.setAddress("c adress new");
-        clientDTO.setLegalFormId(1);
+        clientDTO.setLegal_form_id(1);
 
         when(clientRepository.findById(clientId)).thenReturn(Optional.empty());
 
@@ -381,7 +394,7 @@ public class ClientServiceTest {
         clientDTO.setName("client new");
         clientDTO.setShortName("c new");
         clientDTO.setAddress("c adress new");
-        clientDTO.setLegalFormId(5);
+        clientDTO.setLegal_form_id(5);
 
 
         when(legalFormService.findOne(anyInt())).thenThrow(new LegalFormNotFoundException());

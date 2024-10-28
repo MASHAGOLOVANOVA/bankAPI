@@ -8,7 +8,6 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,7 +32,7 @@ public class ClientController {
                                       @RequestParam(value = "filter_by_name", required = false, defaultValue = "") String filterByName,
                                       @RequestParam(value = "filter_by_short_name", required = false, defaultValue = "") String filterByShortName,
                                       @RequestParam(value = "filter_by_address", required = false, defaultValue = "") String filterByAddress) {
-        return clientService.findAll(filterByName,filterByShortName,filterByAddress,sortById,sortByName,sortByShortName,sortByAddress);
+        return clientService.findAll(filterByName, filterByShortName, filterByAddress, sortById, sortByName, sortByShortName, sortByAddress);
     }
 
     @GetMapping("/{id}")
@@ -64,7 +63,6 @@ public class ClientController {
             return ResponseEntity.notFound().build();
         }
     }
-
 
 
 }
